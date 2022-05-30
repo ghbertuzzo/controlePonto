@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,27 +16,66 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class HorarioDeTrabalhoView extends TabelaView {
+	
+	private List<JTextField> listTextFieldsData;
 
 	public HorarioDeTrabalhoView(Container container) {
+		this.listTextFieldsData = new ArrayList<JTextField>();
 		addFirstTable(container);
 		activeButtons();
+	}	
+
+	public List<JTextField> getListTextFieldsData() {
+		return listTextFieldsData;
+	}
+
+	public void setListTextFieldsData(List<JTextField> listTextFieldsData) {
+		this.listTextFieldsData = listTextFieldsData;
 	}
 
 	public void addFirstTable(Container container) {
 		JPanel firstPanel = new JPanel(new GridLayout(2, 1));
 		JPanel secondPanel = new JPanel(new GridLayout(4, 1));
-		JPanel panelNull = new JPanel();
+		// JPanel panelNull = new JPanel();
 		JPanel panelTitle = addTitle("HORÁRIO DE TRABALHO");
+		JPanel panelData = addDataFields();
 		JPanel panelEditTexts = addEditTexts();
 		JPanel panelButtons = addButtons();
 		JPanel panelTable = addTable();
-		secondPanel.add(panelNull);
+		// secondPanel.add(panelNull);
 		secondPanel.add(panelTitle);
+		secondPanel.add(panelData);
 		secondPanel.add(panelEditTexts);
 		secondPanel.add(panelButtons);
 		firstPanel.add(secondPanel);
 		firstPanel.add(panelTable);
 		container.add(firstPanel);
+	}
+
+	private JPanel addDataFields() {
+		JPanel firstPanel = new JPanel();
+		JPanel secondPanel = new JPanel();
+		firstPanel.add(secondPanel);
+		JLabel labelDate = new JLabel("Data");
+		JTextField textFieldData1 = new JTextField(2);
+		JTextField textFieldData2 = new JTextField(2);
+		JTextField textFieldData3 = new JTextField(2);
+		JButton btnSalvar = new JButton();
+		btnSalvar.setText("Salvar");
+		JButton btnCarregar = new JButton();
+		btnCarregar.setText("Carregar");
+		getListButtons().add(btnSalvar);
+		getListButtons().add(btnCarregar);
+		secondPanel.add(labelDate);
+		secondPanel.add(textFieldData1);
+		secondPanel.add(textFieldData2);
+		secondPanel.add(textFieldData3);
+		secondPanel.add(btnSalvar);
+		secondPanel.add(btnCarregar);
+		getListTextFieldsData().add(textFieldData1);
+		getListTextFieldsData().add(textFieldData2);
+		getListTextFieldsData().add(textFieldData3);
+		return firstPanel;
 	}
 
 	public JPanel addEditTexts() {
@@ -83,22 +124,38 @@ public class HorarioDeTrabalhoView extends TabelaView {
 	}
 
 	public void activeButtons() {
-		if (this.getListButtons().size() == 3) {
+		if (this.getListButtons().size() == 5) {
 			this.getListButtons().get(0).addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					addEntries();
+					// TODO Auto-generated method stub
+					saveDB();
 				}
 			});
 			this.getListButtons().get(1).addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					removeList();
+					// TODO Auto-generated method stub
+					loadDB();
 				}
 			});
 			this.getListButtons().get(2).addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					addEntries();
+				}
+			});
+			this.getListButtons().get(3).addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					removeList();
+				}
+			});
+			this.getListButtons().get(4).addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -107,11 +164,60 @@ public class HorarioDeTrabalhoView extends TabelaView {
 			});
 		}
 	}
+	
+	public void saveDB() {
+		if(validDataFields()) {
+			System.out.println("Passou validação!");
+		}
+	}
+	
+	public void loadDB() {
+		if(validDataFields()) {
+			System.out.println("Passou validação!");
+		}
+	}
 
 	public void addEntries() {
 		if (validateFields()) {
 			addList();
 		}
+	}
+	
+	public Boolean validDataFields() {
+		for(int i = 0; i < this.getListTextFieldsData().size(); i++) {
+			if(this.getListTextFieldsData().get(i).getText().length()!=2) {	//VALIDAÇÃO GENÉRICA
+				JOptionPane.showMessageDialog(null, "Entrada inválida: informe 2 digitos!");
+				this.getListTextFieldsData().get(i).requestFocus();
+				return false;
+			}
+			if(!this.getListTextFieldsData().get(i).getText().matches("[+-]?\\d*(\\.\\d+)?")) {	//VALIDAÇÃO GENÉRICA
+				JOptionPane.showMessageDialog(null, "Entrada inválida: Informe 2 digitos numéricos!");
+				this.getListTextFieldsData().get(i).requestFocus();
+				return false;
+			}
+			if(i == 0) { //TRATAR CAMPO DIA
+				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>31) {
+					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um dia válido!");
+					this.getListTextFieldsData().get(i).requestFocus();
+					return false;
+				}
+			}
+			if(i == 1) { //TRATAR CAMPO MÊS
+				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>12) {
+					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um mês válido!");
+					this.getListTextFieldsData().get(i).requestFocus();
+					return false;
+				}
+			}			
+			if(i == 2) { //TRATAR CAMPO ANO
+				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>31) {
+					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um ano válido!");
+					this.getListTextFieldsData().get(i).requestFocus();
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public Boolean validFieldsHoursAndMinutes(int i, JTextField field) {

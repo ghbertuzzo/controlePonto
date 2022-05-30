@@ -34,7 +34,7 @@ public class JanelaPrincipal extends JFrame {
 		this.setTitle("Controle de Ponto");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(800, 600);
+		this.setSize(900, 700);
 		this.setVisible(true);
 	}
 }
