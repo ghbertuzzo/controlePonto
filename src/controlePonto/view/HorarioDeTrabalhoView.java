@@ -40,15 +40,13 @@ public class HorarioDeTrabalhoView extends TabelaView {
 	public void addFirstTable(Container container) {
 		JPanel firstPanel = new JPanel(new GridLayout(2, 1));
 		JPanel secondPanel = new JPanel(new GridLayout(4, 1));
-		// JPanel panelNull = new JPanel();
-		JPanel panelTitle = addTitle("HORÁRIO DE TRABALHO");
 		JPanel panelData = addDataFields();
+		JPanel panelTitle = addTitle("HORÁRIO DE TRABALHO");
 		JPanel panelEditTexts = addEditTexts();
 		JPanel panelButtons = addButtons();
 		JPanel panelTable = addTable();
-		// secondPanel.add(panelNull);
-		secondPanel.add(panelTitle);
 		secondPanel.add(panelData);
+		secondPanel.add(panelTitle);
 		secondPanel.add(panelEditTexts);
 		secondPanel.add(panelButtons);
 		firstPanel.add(secondPanel);
@@ -61,6 +59,8 @@ public class HorarioDeTrabalhoView extends TabelaView {
 		JPanel secondPanel = new JPanel();
 		firstPanel.add(secondPanel);
 		JLabel labelDate = new JLabel("Data");
+		JLabel label = new JLabel("/");
+		JLabel label2 = new JLabel("/");
 		JTextField textFieldData1 = new JTextField(2);
 		JTextField textFieldData2 = new JTextField(2);
 		JTextField textFieldData3 = new JTextField(2);
@@ -72,7 +72,9 @@ public class HorarioDeTrabalhoView extends TabelaView {
 		getListButtons().add(btnCarregar);
 		secondPanel.add(labelDate);
 		secondPanel.add(textFieldData1);
+		secondPanel.add(label);
 		secondPanel.add(textFieldData2);
+		secondPanel.add(label2);
 		secondPanel.add(textFieldData3);
 		secondPanel.add(btnSalvar);
 		secondPanel.add(btnCarregar);
@@ -180,7 +182,7 @@ public class HorarioDeTrabalhoView extends TabelaView {
 			// implementar outras validações!
 			
 			if(hasARegister()) { // já possui registro nesta data?
-				JOptionPane.showConfirmDialog(null,"Deseja sobrescrever as informações?");
+				JOptionPane.showConfirmDialog(null,"Este dia já possui registros. Deseja sobrescrever as informações?");
 			}
 		}
 	}
