@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import controlePonto.db.DAOHistorico;
+import controlePonto.model.Historico;
 
 public class HorarioDeTrabalhoView extends TabelaView {
 	
@@ -130,7 +134,12 @@ public class HorarioDeTrabalhoView extends TabelaView {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					saveDB();
+					try {
+						saveDB();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			});
 			this.getListButtons().get(1).addActionListener(new ActionListener() {
@@ -165,15 +174,33 @@ public class HorarioDeTrabalhoView extends TabelaView {
 		}
 	}
 	
-	public void saveDB() {
+	public void saveDB() throws SQLException {
 		if(validDataFields()) {
-			System.out.println("Passou validação!");
+			System.out.println("Passou validação de data!");
+			// implementar outras validações!
+			
+			if(hasARegister()) { // já possui registro nesta data?
+				JOptionPane.showConfirmDialog(null,"Deseja sobrescrever as informações?");
+			}
 		}
 	}
 	
+	private boolean hasARegister() throws SQLException {
+		DAOHistorico daohistorico = new DAOHistorico();
+		String date = getDateFormatted();
+		Historico historico = daohistorico.getHistoricoByDate(date);
+		if(historico!=null)
+			return true;
+		return false;
+	}
+
+	private String getDateFormatted() {
+		return new String("20"+this.getListTextFieldsData().get(2).getText()+"-"+this.getListTextFieldsData().get(1).getText()+"-"+this.getListTextFieldsData().get(0).getText());
+	}
+
 	public void loadDB() {
 		if(validDataFields()) {
-			System.out.println("Passou validação!");
+			System.out.println("Passou validação de data!");
 		}
 	}
 
@@ -185,32 +212,32 @@ public class HorarioDeTrabalhoView extends TabelaView {
 	
 	public Boolean validDataFields() {
 		for(int i = 0; i < this.getListTextFieldsData().size(); i++) {
-			if(this.getListTextFieldsData().get(i).getText().length()!=2) {	//VALIDAÇÃO GENÉRICA
+			if(this.getListTextFieldsData().get(i).getText().length()!=2) {	
 				JOptionPane.showMessageDialog(null, "Entrada inválida: informe 2 digitos!");
 				this.getListTextFieldsData().get(i).requestFocus();
 				return false;
 			}
-			if(!this.getListTextFieldsData().get(i).getText().matches("[+-]?\\d*(\\.\\d+)?")) {	//VALIDAÇÃO GENÉRICA
+			if(!this.getListTextFieldsData().get(i).getText().matches("[+-]?\\d*(\\.\\d+)?")) {
 				JOptionPane.showMessageDialog(null, "Entrada inválida: Informe 2 digitos numéricos!");
 				this.getListTextFieldsData().get(i).requestFocus();
 				return false;
 			}
-			if(i == 0) { //TRATAR CAMPO DIA
+			if(i == 0) {
 				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>31) {
 					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um dia válido!");
 					this.getListTextFieldsData().get(i).requestFocus();
 					return false;
 				}
 			}
-			if(i == 1) { //TRATAR CAMPO MÊS
+			if(i == 1) {
 				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>12) {
 					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um mês válido!");
 					this.getListTextFieldsData().get(i).requestFocus();
 					return false;
 				}
 			}			
-			if(i == 2) { //TRATAR CAMPO ANO
-				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>31) {
+			if(i == 2) {
+				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>22) {
 					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um ano válido!");
 					this.getListTextFieldsData().get(i).requestFocus();
 					return false;

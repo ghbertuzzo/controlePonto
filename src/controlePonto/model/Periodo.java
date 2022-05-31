@@ -6,7 +6,7 @@ public class Periodo {
 
 	private LocalTime entrada;
 	private LocalTime saida;
-	
+
 	public Periodo(LocalTime entrada, LocalTime saida) {
 		super();
 		this.entrada = entrada;
@@ -28,5 +28,5 @@ public class Periodo {
 	public void setSaida(LocalTime saida) {
 		this.saida = saida;
 	}
-	
+
 }

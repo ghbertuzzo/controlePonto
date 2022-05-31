@@ -25,11 +25,13 @@ public class HoraExtraController {
 	}
 
 	public void subHoraExtra() {
-		this.context.horaExtraView.setTable(calculaHoraExtra(this.context.horarioDeTrabalhoView,this.context.marcacoesFeitasView, this.context.horaExtraView));
+		this.context.horaExtraView.setTable(calculaHoraExtra(this.context.horarioDeTrabalhoView,
+				this.context.marcacoesFeitasView, this.context.horaExtraView));
 		this.context.horaExtraView.renderTable();
 	}
 
-	private JTable calculaHoraExtra(HorarioDeTrabalhoView horarioDeTrabalho, MarcacoesFeitasView marcacoesFeitasView,HoraExtraView horaExtraView) {
+	private JTable calculaHoraExtra(HorarioDeTrabalhoView horarioDeTrabalho, MarcacoesFeitasView marcacoesFeitasView,
+			HoraExtraView horaExtraView) {
 		Dia horarioTrabalhoDia = new Dia();
 		horarioTrabalhoDia = diaController.getConvertedDay(horarioDeTrabalho);
 		Dia marcacoesFeitasDia = new Dia();

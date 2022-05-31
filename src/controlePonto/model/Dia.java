@@ -10,7 +10,7 @@ public class Dia {
 	public Dia() {
 		this.vectorDay = new Boolean[SIZEVECTORDAY];
 		Arrays.fill(this.vectorDay, Boolean.FALSE);
-	}	
+	}
 
 	public Boolean[] getVectorDay() {
 		return vectorDay;
@@ -19,5 +19,5 @@ public class Dia {
 	public void setVectorDay(Boolean[] vetorDia) {
 		this.vectorDay = vetorDia;
 	}
-	
+
 }
