@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 public class MarcacoesFeitasView extends TabelaView{	
 
@@ -20,6 +21,15 @@ public class MarcacoesFeitasView extends TabelaView{
 		activeButtons();
 	}
 
+	public boolean validMarcacoesFeitas(DefaultTableModel tableModel) {
+		if (tableModel.getRowCount() > 0) {
+			return true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Preencha as Marcações Feitas");
+			return false;
+		}
+	}
+	
 	public void addSecondTable(Container container) {
 		JPanel firstPanel = new JPanel(new GridLayout(2, 1));
 		JPanel secondPanel = new JPanel(new GridLayout(4, 1));

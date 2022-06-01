@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,10 +14,10 @@ import controlePonto.controller.HoraExtraController;
 
 public class HoraExtraView extends TabelaView {
 
-	JanelaPrincipal context;
-	HoraExtraController horaExtraController;
+	public JanelaPrincipal context;
+	private HoraExtraController horaExtraController;
 
-	public HoraExtraView(Container container, JanelaPrincipal context) {
+	public HoraExtraView(Container container, JanelaPrincipal context) throws SQLException {
 		addFourthTable(container);
 		activeButtons();
 		this.context = context;

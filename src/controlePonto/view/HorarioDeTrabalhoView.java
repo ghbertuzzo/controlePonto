@@ -5,84 +5,37 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import controlePonto.db.DAOHistorico;
-import controlePonto.model.Historico;
+import javax.swing.table.DefaultTableModel;
 
 public class HorarioDeTrabalhoView extends TabelaView {
-	
-	private List<JTextField> listTextFieldsData;
 
 	public HorarioDeTrabalhoView(Container container) {
-		this.listTextFieldsData = new ArrayList<JTextField>();
 		addFirstTable(container);
 		activeButtons();
-	}	
-
-	public List<JTextField> getListTextFieldsData() {
-		return listTextFieldsData;
-	}
-
-	public void setListTextFieldsData(List<JTextField> listTextFieldsData) {
-		this.listTextFieldsData = listTextFieldsData;
 	}
 
 	public void addFirstTable(Container container) {
 		JPanel firstPanel = new JPanel(new GridLayout(2, 1));
 		JPanel secondPanel = new JPanel(new GridLayout(4, 1));
-		JPanel panelData = addDataFields();
+		JPanel panelNull = new JPanel();
 		JPanel panelTitle = addTitle("HORÁRIO DE TRABALHO");
 		JPanel panelEditTexts = addEditTexts();
 		JPanel panelButtons = addButtons();
 		JPanel panelTable = addTable();
-		secondPanel.add(panelData);
+		secondPanel.add(panelNull);
 		secondPanel.add(panelTitle);
 		secondPanel.add(panelEditTexts);
 		secondPanel.add(panelButtons);
 		firstPanel.add(secondPanel);
 		firstPanel.add(panelTable);
 		container.add(firstPanel);
-	}
-
-	private JPanel addDataFields() {
-		JPanel firstPanel = new JPanel();
-		JPanel secondPanel = new JPanel();
-		firstPanel.add(secondPanel);
-		JLabel labelDate = new JLabel("Data");
-		JLabel label = new JLabel("/");
-		JLabel label2 = new JLabel("/");
-		JTextField textFieldData1 = new JTextField(2);
-		JTextField textFieldData2 = new JTextField(2);
-		JTextField textFieldData3 = new JTextField(2);
-		JButton btnSalvar = new JButton();
-		btnSalvar.setText("Salvar");
-		JButton btnCarregar = new JButton();
-		btnCarregar.setText("Carregar");
-		getListButtons().add(btnSalvar);
-		getListButtons().add(btnCarregar);
-		secondPanel.add(labelDate);
-		secondPanel.add(textFieldData1);
-		secondPanel.add(label);
-		secondPanel.add(textFieldData2);
-		secondPanel.add(label2);
-		secondPanel.add(textFieldData3);
-		secondPanel.add(btnSalvar);
-		secondPanel.add(btnCarregar);
-		getListTextFieldsData().add(textFieldData1);
-		getListTextFieldsData().add(textFieldData2);
-		getListTextFieldsData().add(textFieldData3);
-		return firstPanel;
-	}
+	}	
 
 	public JPanel addEditTexts() {
 		String[] labels = { "Entrada", "Saída" };
@@ -130,43 +83,22 @@ public class HorarioDeTrabalhoView extends TabelaView {
 	}
 
 	public void activeButtons() {
-		if (this.getListButtons().size() == 5) {
+		if (this.getListButtons().size() == 3) {			
 			this.getListButtons().get(0).addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					try {
-						saveDB();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			});
-			this.getListButtons().get(1).addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					loadDB();
-				}
-			});
-			this.getListButtons().get(2).addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					addEntries();
 				}
 			});
-			this.getListButtons().get(3).addActionListener(new ActionListener() {
+			this.getListButtons().get(1).addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					removeList();
 				}
 			});
-			this.getListButtons().get(4).addActionListener(new ActionListener() {
+			this.getListButtons().get(2).addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -176,77 +108,19 @@ public class HorarioDeTrabalhoView extends TabelaView {
 		}
 	}
 	
-	public void saveDB() throws SQLException {
-		if(validDataFields()) {
-			System.out.println("Passou validação de data!");
-			// implementar outras validações!
-			
-			if(hasARegister()) { // já possui registro nesta data?
-				JOptionPane.showConfirmDialog(null,"Este dia já possui registros. Deseja sobrescrever as informações?");
-			}
-		}
-	}
-	
-	private boolean hasARegister() throws SQLException {
-		DAOHistorico daohistorico = new DAOHistorico();
-		String date = getDateFormatted();
-		Historico historico = daohistorico.getHistoricoByDate(date);
-		if(historico!=null)
-			return true;
-		return false;
-	}
-
-	private String getDateFormatted() {
-		return new String("20"+this.getListTextFieldsData().get(2).getText()+"-"+this.getListTextFieldsData().get(1).getText()+"-"+this.getListTextFieldsData().get(0).getText());
-	}
-
-	public void loadDB() {
-		if(validDataFields()) {
-			System.out.println("Passou validação de data!");
-		}
-	}
-
 	public void addEntries() {
 		if (validateFields()) {
 			addList();
 		}
-	}
-	
-	public Boolean validDataFields() {
-		for(int i = 0; i < this.getListTextFieldsData().size(); i++) {
-			if(this.getListTextFieldsData().get(i).getText().length()!=2) {	
-				JOptionPane.showMessageDialog(null, "Entrada inválida: informe 2 digitos!");
-				this.getListTextFieldsData().get(i).requestFocus();
-				return false;
-			}
-			if(!this.getListTextFieldsData().get(i).getText().matches("[+-]?\\d*(\\.\\d+)?")) {
-				JOptionPane.showMessageDialog(null, "Entrada inválida: Informe 2 digitos numéricos!");
-				this.getListTextFieldsData().get(i).requestFocus();
-				return false;
-			}
-			if(i == 0) {
-				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>31) {
-					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um dia válido!");
-					this.getListTextFieldsData().get(i).requestFocus();
-					return false;
-				}
-			}
-			if(i == 1) {
-				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>12) {
-					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um mês válido!");
-					this.getListTextFieldsData().get(i).requestFocus();
-					return false;
-				}
-			}			
-			if(i == 2) {
-				if(Integer.parseInt(this.getListTextFieldsData().get(i).getText())>22) {
-					JOptionPane.showMessageDialog(null, "Entrada inválida: informe um ano válido!");
-					this.getListTextFieldsData().get(i).requestFocus();
-					return false;
-				}
-			}
+	}	
+
+	public boolean validHorarioTrabalho(DefaultTableModel tableModel) {
+		if(tableModel.getRowCount()>0) {
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "Preencha o Horário de Trabalho");
+			return false;
 		}
-		return true;
 	}
 
 	public Boolean validFieldsHoursAndMinutes(int i, JTextField field) {

@@ -3,13 +3,15 @@ package controlePonto.model;
 public class Historico {
 
 	private java.sql.Date date;
+	private int id;
 	private int id_ht;
 	private int id_mf;
 	private int id_he;
 	private int id_at;
 	
-	public Historico(java.sql.Date date, int id_ht, int id_mf, int id_he, int id_at) {
+	public Historico(java.sql.Date date, int id, int id_ht, int id_mf, int id_he, int id_at) {
 		this.date = date;
+		this.id = id;
 		this.id_ht = id_ht;
 		this.id_mf = id_mf;
 		this.id_he = id_he;
@@ -24,6 +26,14 @@ public class Historico {
 		this.date = date;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public int getId_ht() {
 		return id_ht;
 	}

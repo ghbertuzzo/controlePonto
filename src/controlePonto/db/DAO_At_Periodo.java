@@ -2,7 +2,10 @@ package controlePonto.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAO_At_Periodo {
 
@@ -19,5 +22,18 @@ public class DAO_At_Periodo {
 		ps.setInt(2, idPeriodo);
 		ps.execute();
 		ps.close();
+	}
+	
+	public List<Integer> getPeriods(int idAT) throws SQLException {
+		List<Integer> listIds = new ArrayList<Integer>();
+		String querysql = "SELECT id_periodo FROM \"schemaControlePonto\".at_periodo WHERE id_at = ?;";
+		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		ps.setInt(1, idAT);
+		ResultSet rs;
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			listIds.add(rs.getInt(1));
+		}		
+		return listIds;
 	}
 }

@@ -31,7 +31,7 @@ public class DiaController {
 			Periodo period = new Periodo(tableView.getListEntries().get(i), tableView.getListExits().get(i));
 			listOfPeriods.add(period);
 		}
-		Dia day = periodoController.setPeriods(listOfPeriods);
+		Dia day = this.periodoController.setPeriods(listOfPeriods);
 		return day;
 	}
 

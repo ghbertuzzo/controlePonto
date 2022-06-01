@@ -5,16 +5,18 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import controlePonto.controller.AtrasoController;
 
 public class AtrasoView extends TabelaView {
 
-	JanelaPrincipal context;
-	AtrasoController atrasoController;
+	public JanelaPrincipal context;
+	private AtrasoController atrasoController;
 
-	public AtrasoView(Container container, JanelaPrincipal context) {
+	public AtrasoView(Container container, JanelaPrincipal context) throws SQLException {
 		addThirtTable(container);
 		activeButtons();
 		this.context = context;
