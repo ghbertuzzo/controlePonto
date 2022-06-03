@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DAOMarcacoesFeitas {
 
-	private Connection connection;
+	public Connection connection;
 
 	public DAOMarcacoesFeitas() throws SQLException {
 		this.connection = ConnectionFactory.getConnection();
@@ -16,7 +16,7 @@ public class DAOMarcacoesFeitas {
 	public Integer insert() throws SQLException {
 		String querysql = "INSERT INTO \"schemaControlePonto\".marcacoes_feitas (id) VALUES (DEFAULT);";
 		String generatedColumns[] = { "id" };
-		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);
+		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);		
 		int affectedRows = ps.executeUpdate();
 		long id = -1;
 		if (affectedRows > 0) {

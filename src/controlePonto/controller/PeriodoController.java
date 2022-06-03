@@ -1,6 +1,7 @@
 package controlePonto.controller;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,14 @@ public class PeriodoController {
 			}
 		}
 		return listOfPeriods;
+	}
+
+	public long sumBetweenPeriods(List<Periodo> listPeriods) {
+		long minutesSum = 0;
+		for(Periodo periodo: listPeriods) {
+			minutesSum += ChronoUnit.MINUTES.between(periodo.getEntrada(),periodo.getSaida());
+		}
+		return minutesSum;
 	}
 
 }

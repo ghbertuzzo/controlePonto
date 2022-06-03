@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import controlePonto.model.Historico;
 
@@ -38,6 +40,19 @@ public class DAOHistorico {
 			historico = new Historico(rs.getDate(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),rs.getInt(6));
 		}
 		return historico;
+	}
+	
+	public List<Historico> getHistoricos() throws SQLException {
+		List<Historico> historicos = new ArrayList<Historico>();
+		String querysql = "SELECT date, id, id_ht, id_mf, id_he, id_at	FROM \"schemaControlePonto\".historico ORDER BY date;";
+		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		ResultSet rs;
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			Historico historico = new Historico(rs.getDate(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),rs.getInt(6));
+			historicos.add(historico);
+		}
+		return historicos;
 	}
 	
 	public int getIdHistoricoByDate(String date) throws SQLException {

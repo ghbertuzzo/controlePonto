@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DAOHoraExtra {
 
-	private Connection connection;
+	public Connection connection;
 
 	public DAOHoraExtra() throws SQLException {
 		this.connection = ConnectionFactory.getConnection();
@@ -17,7 +17,7 @@ public class DAOHoraExtra {
 		String querysql = "INSERT INTO \"schemaControlePonto\".hora_extra (id) VALUES (DEFAULT);";
 		String generatedColumns[] = { "id" };
 		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);
-		int affectedRows = ps.executeUpdate();
+		int affectedRows = ps.executeUpdate(querysql,generatedColumns);
 		long id = -1;
 		if (affectedRows > 0) {
 			try (ResultSet rs = ps.getGeneratedKeys()) {
