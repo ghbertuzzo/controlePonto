@@ -1,6 +1,5 @@
 package controlePonto.db;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,15 +10,15 @@ import controlePonto.model.Historico;
 
 public class DAOHistorico {
 
-	private Connection connection;
+	private ConnectionFactory connection;
 
-	public DAOHistorico() throws SQLException {
-		this.connection = ConnectionFactory.getConnection();
+	public DAOHistorico(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 	}
 	
 	public void insert(String date, int idHT, int idMF, int idHE, int idAT) throws SQLException {
 		String querysql = "INSERT INTO \"schemaControlePonto\".historico(id, date, id_ht, id_mf, id_he, id_at) VALUES (default, ?, ?, ?, ?, ?);";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ps.setDate(1, java.sql.Date.valueOf(date));
 		ps.setInt(2, idHT);
 		ps.setInt(3, idMF);
@@ -32,7 +31,7 @@ public class DAOHistorico {
 	public Historico getHistoricoByDate(String date) throws SQLException {
 		Historico historico = null;
 		String querysql = "SELECT date, id, id_ht, id_mf, id_he, id_at	FROM \"schemaControlePonto\".historico WHERE date=?;";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ps.setDate(1, java.sql.Date.valueOf(date));
 		ResultSet rs;
 		rs = ps.executeQuery();
@@ -46,7 +45,7 @@ public class DAOHistorico {
 	public List<Historico> getHistoricos() throws SQLException {
 		List<Historico> historicos = new ArrayList<Historico>();
 		String querysql = "SELECT date, id, id_ht, id_mf, id_he, id_at	FROM \"schemaControlePonto\".historico ORDER BY date;";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ResultSet rs;
 		rs = ps.executeQuery();
 		while (rs.next()) {
@@ -60,7 +59,7 @@ public class DAOHistorico {
 	public int getIdHistoricoByDate(String date) throws SQLException {
 		long idHistorico = -1;
 		String querysql = "SELECT id FROM \"schemaControlePonto\".historico WHERE date=?;";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ps.setDate(1, java.sql.Date.valueOf(date));
 		ResultSet rs;
 		rs = ps.executeQuery();
@@ -73,7 +72,7 @@ public class DAOHistorico {
 
 	public void delete(int id) throws SQLException {
 		String querysql = "DELETE FROM \"schemaControlePonto\".historico WHERE id=?;";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);		
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);		
 		ps.setInt(1, id);		
 		ps.executeUpdate();
 		ps.close();

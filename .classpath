@@ -6,21 +6,20 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/postgresql-42.3.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jasperreports-6.19.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-logging-1.2-bin/commons-logging-1.2/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-digester3-3.2-bin/commons-digester3-3.2/commons-digester3-3.2.jar" sourcepath="C:/Users/Admin/Downloads/commons-digester3-3.2-bin/commons-digester3-3.2/commons-digester3-3.2-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/Users/Admin/Downloads/commons-digester3-3.2-bin/commons-digester3-3.2/commons-digester3-3.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-collections4-4.4-bin/commons-collections4-4.4/commons-collections4-4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-beanutils-1.9.4-bin/commons-beanutils-1.9.4/commons-beanutils-1.9.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jasperreports-fonts-6.19.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jasperreports-javaflow-6.19.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-digester3-3.2-bin/commons-digester3-3.2/commons-digester3-3.2-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-digester3-3.2-bin/commons-digester3-3.2/commons-digester3-3.2-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-digester3-3.2-bin/commons-digester3-3.2/commons-digester3-3.2-with-deps.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/commons-digester-1.7.jar/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/postgresql-42.3.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/jasperreports-6.19.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-beanutils-1.9.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-collections4-4.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-collections4-4.4-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-collections4-4.4-tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-collections4-4.4-test-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-beanutils-1.9.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-beanutils-1.9.4-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-beanutils-1.9.4-tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-beanutils-1.9.4-test-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Documents/Projetos/Controle Ponto/controlePonto/src/libs/commons-digester3-3.2-with-deps.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

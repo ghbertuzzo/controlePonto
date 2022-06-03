@@ -11,17 +11,20 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import controlePonto.controller.HoraExtraController;
+import controlePonto.db.ConnectionFactory;
 
 public class HoraExtraView extends TabelaView {
 
 	public JanelaPrincipal context;
 	private HoraExtraController horaExtraController;
+	private ConnectionFactory connection;
 
-	public HoraExtraView(Container container, JanelaPrincipal context) throws SQLException {
+	public HoraExtraView(Container container, JanelaPrincipal context, ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 		addFourthTable(container);
 		activeButtons();
 		this.context = context;
-		this.horaExtraController = new HoraExtraController(context);
+		this.horaExtraController = new HoraExtraController(context,this.connection);
 	}
 
 	public void addFourthTable(Container container) {

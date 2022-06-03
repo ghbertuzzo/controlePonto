@@ -21,11 +21,13 @@ import controlePonto.controller.HistoricoController;
 import controlePonto.controller.HoraExtraController;
 import controlePonto.controller.HorarioDeTrabalhoController;
 import controlePonto.controller.MarcacoesFeitasController;
+import controlePonto.db.ConnectionFactory;
 import controlePonto.model.Historico;
 import net.sf.jasperreports.engine.JRException;
 
 public class JanelaPrincipal extends JFrame {
 
+	public ConnectionFactory connectionFactory;
 	public Container containerPrincipal;
 	public HorarioDeTrabalhoView horarioDeTrabalhoView;
 	public MarcacoesFeitasView marcacoesFeitasView;
@@ -43,17 +45,18 @@ public class JanelaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = -8113310048659696964L;
 
-	public JanelaPrincipal() throws SQLException {
+	public JanelaPrincipal(ConnectionFactory connectionFactory) throws SQLException {
 		super();
+		this.connectionFactory = connectionFactory;
 		this.listButtons = new ArrayList<JButton>();
 		this.listTextFieldsData = new ArrayList<JTextField>();
 		createLayout();
 
-		this.htController = new HorarioDeTrabalhoController();
-		this.mfController = new MarcacoesFeitasController();
-		this.atController = new AtrasoController(this);
-		this.heController = new HoraExtraController(this);
-		this.historicoController = new HistoricoController();
+		this.htController = new HorarioDeTrabalhoController(this.connectionFactory);
+		this.mfController = new MarcacoesFeitasController(this.connectionFactory);
+		this.atController = new AtrasoController(this,this.connectionFactory);
+		this.heController = new HoraExtraController(this,this.connectionFactory);
+		this.historicoController = new HistoricoController(this.connectionFactory);
 		activeButtons();
 	}
 
@@ -64,8 +67,8 @@ public class JanelaPrincipal extends JFrame {
 		JPanel gridLayout = addGridLayout();
 		this.horarioDeTrabalhoView = new HorarioDeTrabalhoView(gridLayout);
 		this.marcacoesFeitasView = new MarcacoesFeitasView(gridLayout);
-		this.atrasoView = new AtrasoView(gridLayout, this);
-		this.horaExtraView = new HoraExtraView(gridLayout, this);
+		this.atrasoView = new AtrasoView(gridLayout, this,this.connectionFactory);
+		this.horaExtraView = new HoraExtraView(gridLayout, this,this.connectionFactory);
 		addExportButton();
 	}
 

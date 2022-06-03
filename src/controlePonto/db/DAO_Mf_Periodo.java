@@ -1,6 +1,5 @@
 package controlePonto.db;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,15 +8,15 @@ import java.util.List;
 
 public class DAO_Mf_Periodo {
 
-	private Connection connection;
+	private ConnectionFactory connection;
 
-	public DAO_Mf_Periodo() throws SQLException {
-		this.connection = ConnectionFactory.getConnection();
+	public DAO_Mf_Periodo(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 	}
 
 	public void insert(int idMF, int idPeriodo) throws SQLException {
 		String querysql = "INSERT INTO \"schemaControlePonto\".mf_periodo(id, id_mf, id_periodo) VALUES (default, ?, ?);";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ps.setInt(1, idMF);
 		ps.setInt(2, idPeriodo);
 		ps.execute();
@@ -27,7 +26,7 @@ public class DAO_Mf_Periodo {
 	public List<Integer> getPeriods(int idMF) throws SQLException {
 		List<Integer> listIds = new ArrayList<Integer>();
 		String querysql = "SELECT id_periodo FROM \"schemaControlePonto\".mf_periodo WHERE id_mf = ?;";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ps.setInt(1, idMF);
 		ResultSet rs;
 		rs = ps.executeQuery();

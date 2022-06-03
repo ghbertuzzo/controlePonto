@@ -3,6 +3,8 @@ package controlePonto.controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import controlePonto.db.ConnectionFactory;
 import controlePonto.db.DAOMarcacoesFeitas;
 import controlePonto.db.DAOPeriodo;
 import controlePonto.db.DAO_Mf_Periodo;
@@ -13,15 +15,17 @@ public class MarcacoesFeitasController {
 	
 	private DAOPeriodo daoPeriodo;
 	private DAO_Mf_Periodo daomf_periodo;
+	private ConnectionFactory connection;
 	
-	public MarcacoesFeitasController() throws SQLException {
-		this.daoPeriodo = new DAOPeriodo();	
-		this.daomf_periodo = new DAO_Mf_Periodo();
+	public MarcacoesFeitasController(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
+		this.daoPeriodo = new DAOPeriodo(this.connection);	
+		this.daomf_periodo = new DAO_Mf_Periodo(this.connection);
 	}
 
 	public int saveMarcacoesFeitas(MarcacoesFeitasView marcacoesFeitasView) throws SQLException {
 		PeriodoController periodoController = new PeriodoController();
-		DAOMarcacoesFeitas daoMarcacoesFeitas = new DAOMarcacoesFeitas();
+		DAOMarcacoesFeitas daoMarcacoesFeitas = new DAOMarcacoesFeitas(this.connection);
 		//CRIA NOVO REGISTRO DO TIPO MARCACOESFEITAS NO BANCO 
 		Integer idMF = daoMarcacoesFeitas.insert();
 		//CRIA NOVOS REGISTROS DO TIPO PERIODO (PERIODOS DE MARCACOESFEITAS) NO BANCO

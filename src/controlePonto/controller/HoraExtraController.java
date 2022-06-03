@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JTable;
 
+import controlePonto.db.ConnectionFactory;
 import controlePonto.db.DAOHoraExtra;
 import controlePonto.db.DAOPeriodo;
 import controlePonto.db.DAO_He_Periodo;
@@ -24,13 +25,15 @@ public class HoraExtraController {
 	private PeriodoController periodoController;
 	private DAOPeriodo daoPeriodo;
 	private DAO_He_Periodo daohe_periodo;
+	private ConnectionFactory connection;
 	
-	public HoraExtraController(JanelaPrincipal context) throws SQLException {
+	public HoraExtraController(JanelaPrincipal context,ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 		this.context = context;
 		this.diaController = new DiaController();
 		this.periodoController = new PeriodoController();
-		this.daoPeriodo = new DAOPeriodo();
-		this.daohe_periodo = new DAO_He_Periodo();
+		this.daoPeriodo = new DAOPeriodo(this.connection);
+		this.daohe_periodo = new DAO_He_Periodo(this.connection);
 	}
 
 	public void subHoraExtra() {
@@ -54,7 +57,7 @@ public class HoraExtraController {
 	}
 
 	public int saveHoraExtra(HoraExtraView horaExtraView) throws SQLException {
-		DAOHoraExtra daoHoraExtra= new DAOHoraExtra();
+		DAOHoraExtra daoHoraExtra= new DAOHoraExtra(this.connection);
 		//CRIA NOVO REGISTRO DO TIPO HORAEXTRA NO BANCO 
 		Integer idHE = daoHoraExtra.insert();
 		//CRIA NOVOS REGISTROS DO TIPO PERIODO (PERIODOS DE HORA EXTRA) NO BANCO

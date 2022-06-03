@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
+
+import controlePonto.db.ConnectionFactory;
 import controlePonto.db.DAOAtraso;
 import controlePonto.db.DAOPeriodo;
 import controlePonto.db.DAO_At_Periodo;
@@ -22,13 +24,15 @@ public class AtrasoController {
 	private PeriodoController periodoController;
 	private DAOPeriodo daoPeriodo;
 	private DAO_At_Periodo daoat_periodo;
+	private ConnectionFactory connection;
 	
-	public AtrasoController(JanelaPrincipal context) throws SQLException {
+	public AtrasoController(JanelaPrincipal context, ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 		this.context = context;
 		this.diaController = new DiaController();
 		this.periodoController = new PeriodoController();
-		this.daoPeriodo = new DAOPeriodo();
-		this.daoat_periodo = new DAO_At_Periodo();
+		this.daoPeriodo = new DAOPeriodo(this.connection);
+		this.daoat_periodo = new DAO_At_Periodo(this.connection);
 	}
 	
 	public void subAtraso() {
@@ -50,7 +54,7 @@ public class AtrasoController {
 	}
 
 	public int saveAtrasos(AtrasoView atrasoView) throws SQLException {		
-		DAOAtraso daoAtraso = new DAOAtraso();
+		DAOAtraso daoAtraso = new DAOAtraso(this.connection);
 		//CRIA NOVO REGISTRO DO TIPO ATRASO NO BANCO 
 		Integer idAt = daoAtraso.insert();
 		//CRIA NOVOS REGISTROS DO TIPO PERIODO (PERIODOS DE ATRASO) NO BANCO

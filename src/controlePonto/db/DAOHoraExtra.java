@@ -1,22 +1,21 @@
 package controlePonto.db;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAOHoraExtra {
 
-	public Connection connection;
+	private ConnectionFactory connection;
 
-	public DAOHoraExtra() throws SQLException {
-		this.connection = ConnectionFactory.getConnection();
+	public DAOHoraExtra(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 	}
 
 	public Integer insert() throws SQLException {
 		String querysql = "INSERT INTO \"schemaControlePonto\".hora_extra (id) VALUES (DEFAULT);";
 		String generatedColumns[] = { "id" };
-		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql, generatedColumns);
 		int affectedRows = ps.executeUpdate(querysql,generatedColumns);
 		long id = -1;
 		if (affectedRows > 0) {

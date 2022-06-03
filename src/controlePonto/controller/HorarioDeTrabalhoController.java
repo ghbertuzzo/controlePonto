@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import controlePonto.db.ConnectionFactory;
 import controlePonto.db.DAOHorarioDeTrabalho;
 import controlePonto.db.DAOPeriodo;
 import controlePonto.db.DAO_Ht_Periodo;
@@ -14,15 +15,17 @@ public class HorarioDeTrabalhoController {
 	
 	private DAOPeriodo daoPeriodo;
 	private DAO_Ht_Periodo daoht_periodo;
+	private ConnectionFactory connection;
 	
-	public HorarioDeTrabalhoController() throws SQLException {
-		this.daoPeriodo = new DAOPeriodo();
-		this.daoht_periodo = new DAO_Ht_Periodo();
+	public HorarioDeTrabalhoController(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
+		this.daoPeriodo = new DAOPeriodo(this.connection);
+		this.daoht_periodo = new DAO_Ht_Periodo(this.connection);
 	}
 
 	public int saveHorarioDeTrabalho(HorarioDeTrabalhoView horarioDeTrabalhoView) throws SQLException {
 		PeriodoController periodoController = new PeriodoController();
-		DAOHorarioDeTrabalho daoHt = new DAOHorarioDeTrabalho();
+		DAOHorarioDeTrabalho daoHt = new DAOHorarioDeTrabalho(this.connection);
 		//CRIA NOVO REGISTRO DO TIPO HORARIODETRABALHO NO BANCO 
 		Integer idHT = daoHt.insert();
 		//CRIA NOVOS REGISTROS DO TIPO PERIODO (PERIODOS DE HORARIODETRABALHO) NO BANCO

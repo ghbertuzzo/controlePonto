@@ -10,17 +10,20 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import controlePonto.controller.AtrasoController;
+import controlePonto.db.ConnectionFactory;
 
 public class AtrasoView extends TabelaView {
 
 	public JanelaPrincipal context;
 	private AtrasoController atrasoController;
+	private ConnectionFactory connection;
 
-	public AtrasoView(Container container, JanelaPrincipal context) throws SQLException {
+	public AtrasoView(Container container, JanelaPrincipal context,ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 		addThirtTable(container);
 		activeButtons();
 		this.context = context;
-		this.atrasoController = new AtrasoController(context);
+		this.atrasoController = new AtrasoController(context, this.connection);
 	}
 
 	public void addThirtTable(Container container) {

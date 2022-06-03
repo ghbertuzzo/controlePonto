@@ -1,22 +1,21 @@
 package controlePonto.db;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAOAtraso {
 
-	public Connection connection;
+	private ConnectionFactory connection;
 
-	public DAOAtraso() throws SQLException {
-		this.connection = ConnectionFactory.getConnection();
+	public DAOAtraso(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 	}
 
 	public Integer insert() throws SQLException {
 		String querysql = "INSERT INTO \"schemaControlePonto\".atrasos (id) VALUES (default);";
 		String generatedColumns[] = { "id" };
-		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql, generatedColumns);
 		int affectedRows = ps.executeUpdate(querysql,generatedColumns);
 		long id = -1;
 		if (affectedRows > 0) {

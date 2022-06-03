@@ -1,6 +1,5 @@
 package controlePonto.db;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,16 +10,16 @@ import controlePonto.model.Periodo;
 
 public class DAOPeriodo {
 
-	private Connection connection;
+	private ConnectionFactory connection;
 
-	public DAOPeriodo() throws SQLException {
-		this.connection = ConnectionFactory.getConnection();
+	public DAOPeriodo(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
 	}
 
 	public int insert(int entry, int exit) throws SQLException {
 		String querysql = "INSERT INTO \"schemaControlePonto\".periodo(id, entry, exit) VALUES (default, ?, ?);";
 		String generatedColumns[] = { "id" };
-		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql, generatedColumns);
 		ps.setInt(1, entry);
 		ps.setInt(2, exit);
 		int affectedRows = ps.executeUpdate();
@@ -42,7 +41,7 @@ public class DAOPeriodo {
 		Periodo periodo = null;
 		PeriodoController periodoController = new PeriodoController();
 		String querysql = "SELECT entry, exit FROM \"schemaControlePonto\".periodo WHERE id = ?;";
-		PreparedStatement ps = this.connection.prepareStatement(querysql);
+		PreparedStatement ps = this.connection.getConnection().prepareStatement(querysql);
 		ps.setInt(1, idPeriodo);
 		ResultSet rs;
 		rs = ps.executeQuery();

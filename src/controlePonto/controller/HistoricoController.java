@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -36,11 +35,11 @@ import net.sf.jasperreports.view.JasperViewer;
 public class HistoricoController {
 
 	private DAOHistorico daoHistorico;
-	public Connection connection;
+	public ConnectionFactory connection;
 
-	public HistoricoController() throws SQLException {
-		this.daoHistorico = new DAOHistorico();
-		this.connection = ConnectionFactory.getConnection();
+	public HistoricoController(ConnectionFactory connection) throws SQLException {
+		this.connection = connection;
+		this.daoHistorico = new DAOHistorico(this.connection);
 	}
 
 	public boolean hasARegister(List<JTextField> listJTextField) throws SQLException {
@@ -70,7 +69,7 @@ public class HistoricoController {
 	}
 
 	public Boolean insert(JanelaPrincipal context) throws SQLException {
-		this.connection.setAutoCommit(false);
+		this.connection.getConnection().setAutoCommit(false);
 		try {
 			String date = getDateFormatted(context.listTextFieldsData);
 			int idHT = context.htController.saveHorarioDeTrabalho(context.horarioDeTrabalhoView);
@@ -78,18 +77,18 @@ public class HistoricoController {
 			int idHE = context.heController.saveHoraExtra(context.horaExtraView);
 			int idAT = context.atController.saveAtrasos(context.atrasoView);
 			this.daoHistorico.insert(date, idHT, idMF, idHE, idAT);
-			this.connection.commit();
+			this.connection.getConnection().commit();
 			System.out.println("Commit");
 			return true;
 		} catch (Exception e) {
-			this.connection.rollback();
+			this.connection.getConnection().rollback();
 			System.out.println("Rollback");
 			return false;
 		}
 	}
 
 	public Boolean update(JanelaPrincipal context) throws SQLException {
-		this.connection.setAutoCommit(false);
+		this.connection.getConnection().setAutoCommit(false);
 		try {
 			String date = getDateFormatted(context.listTextFieldsData);
 			int idAntigo = this.daoHistorico.getIdHistoricoByDate(date);
@@ -99,12 +98,12 @@ public class HistoricoController {
 			int idHE = context.heController.saveHoraExtra(context.horaExtraView);
 			int idAT = context.atController.saveAtrasos(context.atrasoView);
 			this.daoHistorico.insert(date, idHT, idMF, idHE, idAT);
-			this.connection.commit();
+			this.connection.getConnection().commit();
 			System.out.println("Commit");
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			this.connection.rollback();
+			this.connection.getConnection().rollback();
 			System.out.println("Rollback");
 			return false;
 		}
@@ -169,12 +168,12 @@ public class HistoricoController {
 		JRBeanCollectionDataSource itensJRBean = new JRBeanCollectionDataSource(listExtrato);
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("CollectionBeanParam", itensJRBean);
-		String reportPath = "C:\\Users\\Admin\\Documents\\Projetos\\Controle Ponto\\controlePonto\\src\\reports\\RelatorioExtratoDia_2.jrxml";
+		String reportPath = "src/reports/RelatorioExtratoDia_2.jrxml";
 		InputStream input = new FileInputStream(new File(reportPath));
 		JasperDesign jasperDesign = JRXmlLoader.load(input);
 		JasperReport jr = JasperCompileManager.compileReport(jasperDesign);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parameters, itensJRBean);
-		JasperViewer.viewReport(jasperPrint);
+		JasperViewer.viewReport(jasperPrint,false);
 	}
 
 	private List<ExtratoDia> getListExtrato(List<Historico> historicos, JanelaPrincipal context) throws SQLException {
