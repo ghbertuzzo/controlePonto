@@ -69,39 +69,44 @@ public class HistoricoController {
 				+ listJTextField.get(2).getText());
 	}
 
-	public void insert(JanelaPrincipal context) throws SQLException {
+	public Boolean insert(JanelaPrincipal context) throws SQLException {
 		this.connection.setAutoCommit(false);
-		String date = getDateFormatted(context.listTextFieldsData);
-		int idHT = context.htController.saveHorarioDeTrabalho(context.horarioDeTrabalhoView);
-		int idMF = context.mfController.saveMarcacoesFeitas(context.marcacoesFeitasView);
-		int idHE = context.heController.saveHoraExtra(context.horaExtraView);
-		int idAT = context.atController.saveAtrasos(context.atrasoView);
-		this.daoHistorico.insert(date, idHT, idMF, idHE, idAT);
-		if (this.connection == null) {
-			System.err.print("Transaction is being rolled back");
-			this.connection.rollback();
-		} else {
-			System.err.print("commited transaction");
+		try {
+			String date = getDateFormatted(context.listTextFieldsData);
+			int idHT = context.htController.saveHorarioDeTrabalho(context.horarioDeTrabalhoView);
+			int idMF = context.mfController.saveMarcacoesFeitas(context.marcacoesFeitasView);
+			int idHE = context.heController.saveHoraExtra(context.horaExtraView);
+			int idAT = context.atController.saveAtrasos(context.atrasoView);
+			this.daoHistorico.insert(date, idHT, idMF, idHE, idAT);
 			this.connection.commit();
+			System.out.println("Commit");
+			return true;
+		} catch (Exception e) {
+			this.connection.rollback();
+			System.out.println("Rollback");
+			return false;
 		}
 	}
 
-	public void update(JanelaPrincipal context) throws SQLException {
+	public Boolean update(JanelaPrincipal context) throws SQLException {
 		this.connection.setAutoCommit(false);
-		String date = getDateFormatted(context.listTextFieldsData);
-		int idAntigo = this.daoHistorico.getIdHistoricoByDate(date);
-		this.daoHistorico.delete(idAntigo);
-		int idHT = context.htController.saveHorarioDeTrabalho(context.horarioDeTrabalhoView);
-		int idMF = context.mfController.saveMarcacoesFeitas(context.marcacoesFeitasView);
-		int idHE = context.heController.saveHoraExtra(context.horaExtraView);
-		int idAT = context.atController.saveAtrasos(context.atrasoView);
-		this.daoHistorico.insert(date, idHT, idMF, idHE, idAT);
-		if (this.connection == null) {
-			System.err.print("Transaction is being rolled back");
-			this.connection.rollback();
-		} else {
-			System.err.print("commited transaction");
+		try {
+			String date = getDateFormatted(context.listTextFieldsData);
+			int idAntigo = this.daoHistorico.getIdHistoricoByDate(date);
+			this.daoHistorico.delete(idAntigo);
+			int idHT = context.htController.saveHorarioDeTrabalho(context.horarioDeTrabalhoView);
+			int idMF = context.mfController.saveMarcacoesFeitas(context.marcacoesFeitasView);
+			int idHE = context.heController.saveHoraExtra(context.horaExtraView);
+			int idAT = context.atController.saveAtrasos(context.atrasoView);
+			this.daoHistorico.insert(date, idHT, idMF, idHE, idAT);
 			this.connection.commit();
+			System.out.println("Commit");
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			this.connection.rollback();
+			System.out.println("Rollback");
+			return false;
 		}
 	}
 
@@ -154,8 +159,9 @@ public class HistoricoController {
 		context.horarioDeTrabalhoView.renderTable();
 	}
 
-	public void exportReportHistorico(List<Historico> historicos, JanelaPrincipal context) throws SQLException, FileNotFoundException, JRException{		
-		List<ExtratoDia> listExtrato = getListExtrato(historicos,context);
+	public void exportReportHistorico(List<Historico> historicos, JanelaPrincipal context)
+			throws SQLException, FileNotFoundException, JRException {
+		List<ExtratoDia> listExtrato = getListExtrato(historicos, context);
 		generateReport(listExtrato);
 	}
 
@@ -175,29 +181,30 @@ public class HistoricoController {
 		PeriodoController periodoController = new PeriodoController();
 		List<ExtratoDia> listExtrato = new ArrayList<ExtratoDia>();
 		listExtrato.add(null);
-		for(Historico historico: historicos) {
-			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");			
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");			
+		for (Historico historico : historicos) {
+			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 			List<Periodo> listPeriodsHE = context.heController.getPeriods(historico.getId_he());
 			long sumDay_HE = periodoController.sumBetweenPeriods(listPeriodsHE);
 			List<Periodo> listPeriodsAT = context.atController.getPeriods(historico.getId_at());
 			long sumDay_AT = periodoController.sumBetweenPeriods(listPeriodsAT);
 			LocalTime localtime_he = periodoController.numberToLocalTime((int) sumDay_HE);
-			String sumhoraextra = dtf.format(localtime_he);			
+			String sumhoraextra = dtf.format(localtime_he);
 			LocalTime localtime_at = periodoController.numberToLocalTime((int) sumDay_AT);
 			String sumatraso = dtf.format(localtime_at);
-			
-			long diference = ChronoUnit.MINUTES.between(localtime_he,localtime_at);
+
+			long diference = ChronoUnit.MINUTES.between(localtime_he, localtime_at);
 			String total;
-			if(diference<=0) {
+			if (diference <= 0) {
 				LocalTime localtime_dif = periodoController.numberToLocalTime((int) Math.abs(diference));
 				total = dtf.format(localtime_dif);
 			} else {
 				LocalTime localtime_dif = periodoController.numberToLocalTime((int) diference);
 				total = dtf.format(localtime_dif);
-				total = "("+total+")";
+				total = "(" + total + ")";
 			}
-			ExtratoDia extratoDia = new ExtratoDia(formatador.format(historico.getDate()), sumatraso, sumhoraextra, total);
+			ExtratoDia extratoDia = new ExtratoDia(formatador.format(historico.getDate()), sumatraso, sumhoraextra,
+					total);
 			listExtrato.add(extratoDia);
 		}
 		return listExtrato;

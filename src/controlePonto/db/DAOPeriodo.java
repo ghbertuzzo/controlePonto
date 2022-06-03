@@ -51,6 +51,7 @@ public class DAOPeriodo {
 			LocalTime saida = periodoController.numberToLocalTime(rs.getInt(2));
 			periodo = new Periodo(entrada, saida);
 		}
+		ps.close();
 		return periodo;
 	}
 

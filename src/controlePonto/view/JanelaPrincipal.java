@@ -190,18 +190,27 @@ public class JanelaPrincipal extends JFrame {
 							options, options[0]);
 					if (opcao == 0) {
 						// SOBRESCREVER
-						this.historicoController.update(this);
-						JOptionPane.showMessageDialog(null, "Registro atualizado com sucesso", "Novo Registro",
-								JOptionPane.INFORMATION_MESSAGE);
-						clearTables();
+						if (this.historicoController.update(this)) {
+							JOptionPane.showMessageDialog(null, "Registro atualizado com sucesso", "Novo Registro",
+									JOptionPane.INFORMATION_MESSAGE);
+							clearTables();
+						} else {
+							JOptionPane.showMessageDialog(null, "Erro ao sobrescrever registro", "Novo Registro",
+									JOptionPane.ERROR_MESSAGE);
+						}
 					} else {
 						// ABORTAR
 					}
 				} else { // NÃO POSSUI REGISTRO, REALIZAR INSERT
-					this.historicoController.insert(this);
-					JOptionPane.showMessageDialog(null, "Registro salvo com sucesso", "Novo Registro",
-							JOptionPane.INFORMATION_MESSAGE);
-					clearTables();
+					if (this.historicoController.insert(this)) {
+						JOptionPane.showMessageDialog(null, "Registro salvo com sucesso", "Novo Registro",
+								JOptionPane.INFORMATION_MESSAGE);
+						clearTables();
+					} else {
+						JOptionPane.showMessageDialog(null, "Erro ao inserir registro", "Novo Registro",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
 				}
 			}
 		}
@@ -261,7 +270,7 @@ public class JanelaPrincipal extends JFrame {
 		btnSalvar.setText("Salvar");
 		JButton btnCarregar = new JButton();
 		btnCarregar.setText("Carregar");
-		
+
 		this.listButtons.add(btnSalvar);
 		this.listButtons.add(btnCarregar);
 		secondPanel.add(labelDate);

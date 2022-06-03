@@ -39,6 +39,7 @@ public class DAOHistorico {
 		while (rs.next()) {
 			historico = new Historico(rs.getDate(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),rs.getInt(6));
 		}
+		ps.close();
 		return historico;
 	}
 	
@@ -52,6 +53,7 @@ public class DAOHistorico {
 			Historico historico = new Historico(rs.getDate(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),rs.getInt(6));
 			historicos.add(historico);
 		}
+		ps.close();
 		return historicos;
 	}
 	
@@ -65,6 +67,7 @@ public class DAOHistorico {
 		if (rs.next()) {
 			idHistorico = rs.getLong(1);
 		}
+		ps.close();
 		return (int) idHistorico;
 	}
 
@@ -73,5 +76,6 @@ public class DAOHistorico {
 		PreparedStatement ps = this.connection.prepareStatement(querysql);		
 		ps.setInt(1, id);		
 		ps.executeUpdate();
+		ps.close();
 	}
 }

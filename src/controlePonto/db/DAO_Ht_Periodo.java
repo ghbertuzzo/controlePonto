@@ -33,7 +33,8 @@ public class DAO_Ht_Periodo {
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			listIds.add(rs.getInt(1));
-		}		
+		}
+		ps.close();
 		return listIds;
 	}
 

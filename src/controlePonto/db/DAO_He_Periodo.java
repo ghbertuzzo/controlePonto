@@ -34,6 +34,7 @@ public class DAO_He_Periodo {
 		while (rs.next()) {
 			listIds.add(rs.getInt(1));
 		}		
+		ps.close();
 		return listIds;
 	}
 }

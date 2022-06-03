@@ -14,7 +14,7 @@ public class DAOAtraso {
 	}
 
 	public Integer insert() throws SQLException {
-		String querysql = "INSERT INTO \"schemaControlePonto\".atrasos (id) VALUES (DEFAULT);";
+		String querysql = "INSERT INTO \"schemaControlePonto\".atrasos (id) VALUES (default);";
 		String generatedColumns[] = { "id" };
 		PreparedStatement ps = this.connection.prepareStatement(querysql, generatedColumns);
 		int affectedRows = ps.executeUpdate(querysql,generatedColumns);
